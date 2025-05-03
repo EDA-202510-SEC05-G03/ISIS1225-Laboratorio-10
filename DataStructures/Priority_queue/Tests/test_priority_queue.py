@@ -1,5 +1,5 @@
 from DataStructures.Priority_queue import priority_queue as pq
-from DataStructures.List import array_list as lt
+from DataStructures.List import arraylist as lt
 from DataStructures.Utils.utils import handle_not_implemented
 
 
@@ -15,7 +15,7 @@ def setup_tests():
     return empty_heap, some_heap
 
 
-@handle_not_implemented
+#@handle_not_implemented
 def test_new_heap():
     new_heap = pq.new_heap()
 
@@ -31,7 +31,7 @@ def test_new_heap():
     assert new_heap["cmp_function"] is not None
 
 
-@handle_not_implemented
+#@handle_not_implemented
 def test_insert():
     empty_heap, some_heap = setup_tests()
 
@@ -51,21 +51,21 @@ def test_insert():
     assert some_heap["cmp_function"] is not None
 
 
-@handle_not_implemented
+#@handle_not_implemented
 def test_is_empty():
     empty_heap, some_heap = setup_tests()
     assert pq.is_empty(empty_heap) == True
     assert pq.is_empty(some_heap) == False
 
 
-@handle_not_implemented
+#@handle_not_implemented
 def test_size():
     empty_heap, some_heap = setup_tests()
     assert type(pq.size(empty_heap)) == int
     assert type(pq.size(some_heap)) == int
 
 
-@handle_not_implemented
+#@handle_not_implemented
 def test_get_first_priority():
     empty_heap, some_heap = setup_tests()
 
@@ -79,7 +79,7 @@ def test_get_first_priority():
     assert some_heap["size"] is not None
 
 
-@handle_not_implemented
+#@handle_not_implemented
 def test_remove():
     empty_heap, some_heap = setup_tests()
 
