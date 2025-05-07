@@ -302,6 +302,7 @@ def dfs(graph, vertex, visited, component):
             dfs(graph, adj_vertex, visited, component)
 
 
+
 #Funciones para la medición de tiempos
 
 def get_time():
