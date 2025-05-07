@@ -6,7 +6,7 @@ data_dir = os.path.dirname(os.path.realpath('__file__')) + '/Data/'
 
 from DataStructures.Graph import adj_list_graph as gr
 from DataStructures.Map import map_linear_probing as m
-from DataStructures.List import single_linked_list as lt
+from DataStructures.List import array_list as lt
 from DataStructures.Priority_queue import priority_queue as pq
 
 def init():
@@ -42,42 +42,42 @@ def load_services(analyzer, services_file):
     
     try:
         services_file = os.path.join(data_dir, services_file)
-        print(f"Cargando archivo: {services_file}")
         
         input_file = csv.DictReader(open(services_file, encoding="utf-8"), delimiter=",")
         
         total_routes = 0
         total_stops = 0
         route_prev_stops = {}
-        
         for service in input_file:
+            contador += 1
             service_id = service['ServiceNo']
             direction = service['Direction']
             stop_sequence = int(service['StopSequence'])
             bus_stop_code = service['BusStopCode']
-            distance = float(service['Distance'])
-            
+            if service['Distance'] != '':
+                distance = float(service['Distance'])
+            else:
+                distance = 0.0
+
             route_id = f"{service_id}-{direction}"
             
-            if not m.contains(analyzer['stops'], bus_stop_code):
+            stop_info = m.get(analyzer['stops'], bus_stop_code)
+            
+            
+            if stop_info is None:
                 stop_info = {
                     'code': bus_stop_code,
                     'routes': lt.new_list()
-                }
+                    }
                 m.put(analyzer['stops'], bus_stop_code, stop_info)
                 total_stops += 1
-                
                 analyzer['connections'].insert_vertex(bus_stop_code)
             
-            stop_info = m.get(analyzer['stops'], bus_stop_code)
-            if stop_info is None:
-                continue
-
             route_list = stop_info['routes']
-
+            
             found = False
-            i = 1
-            while i <= lt.size(route_list):
+            i = 0
+            while i < lt.size(route_list):
                 route = lt.get_element(route_list, i)
                 if route is not None and route['id'] == route_id:
                     found = True
@@ -92,7 +92,7 @@ def load_services(analyzer, services_file):
                 }
                 lt.add_last(route_list, route_info)
                 total_routes += 1
-
+            
             if stop_sequence > 1:
                 prev_stop_code = route_prev_stops.get(route_id)
                 
@@ -111,6 +111,7 @@ def load_services(analyzer, services_file):
                     })
             
             route_prev_stops[route_id] = bus_stop_code
+
 
         connected = connected_components(analyzer)
         end_time = get_time()
@@ -146,13 +147,22 @@ def connected_components(analyzer):
 
     return cc_count
 
-def dfs(graph, vertex, visited, component):
-    visited[vertex] = True
-    lt.add_last(component, vertex)
+def dfs(graph, start_vertex, visited, component):
+  
+    stack = []
+    stack.append(start_vertex)
+    
+    while len(stack) > 0:
+        vertex = stack.pop()
+        
+        if not visited.get(vertex, False):
+ 
+            visited[vertex] = True
+            lt.add_last(component, vertex)
 
-    for adj_vertex in graph.get_adjacent_vertices(vertex):
-        if not visited.get(adj_vertex, False):
-            dfs(graph, adj_vertex, visited, component)
+            for adj_vertex in graph.get_adjacent_vertices(vertex):
+                if not visited.get(adj_vertex, False):
+                    stack.append(adj_vertex)
 
 def get_time():
     return float(time.perf_counter() * 1000)

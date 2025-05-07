@@ -45,18 +45,36 @@ def find_slot(my_map, key, hash_value):
     found = False
     occupied = False
     table = my_map['table']
-    while not found:
-        if is_available(table, hash_value):
+    initial_hash = hash_value
+    
+    attempts = 0
+    while not found and attempts < my_map['capacity']:
+        entry = lt.get_element(table, hash_value)
+        entry_key = me.get_key(entry)
+        
+        if entry_key is None or entry_key == "__EMPTY__":
+            # Espacio disponible
             if first_avail is None:
                 first_avail = hash_value
-            entry = lt.get_element(table, hash_value)
-            if me.get_key(entry) is None:
+            if entry_key is None:
                 found = True
-        elif default_compare(key, lt.get_element(table, hash_value)) == 0:
+        elif key == entry_key:
+            # Encontramos la clave
             first_avail = hash_value
             found = True
             occupied = True
+            
         hash_value = (hash_value + 1) % my_map["capacity"]
+        attempts += 1
+        
+        # Si hemos comprobado toda la tabla y no encontramos la clave
+        if hash_value == initial_hash:
+            break
+            
+    if not found and first_avail is None:
+        # La tabla está llena y no encontramos la clave
+        first_avail = 0
+        
     return occupied, first_avail
 
 def is_available(table, pos):
