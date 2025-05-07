@@ -94,13 +94,6 @@ def new_analyzer():
 # ___________________________________________________
 
 
-def load_services(file):
-     
-
-
-
-
-    
 
 #Funciones para la medición de tiempos
 
