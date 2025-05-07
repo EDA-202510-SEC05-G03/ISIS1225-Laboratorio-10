@@ -71,7 +71,7 @@ def new_list(datastructure='SINGLE_LINKED',
     """
     try:
         module = list_selector(datastructure)
-        lst = module.new_list(
+        lst = module.newList(
             cmpfunction,
             module,
             key,
@@ -120,7 +120,7 @@ def add_last(lst, element):
         Exception
     """
     try:
-        lst['datastructure'].add_last(lst, element)
+        lst['datastructure'].addlast(lst, element)
     except Exception as exp:
         error.reraise(exp, 'TADList->addLast: ')
 
@@ -203,7 +203,7 @@ def get_element(lst, pos):
         Exception
     """
     try:
-        return lst['datastructure'].get_element(lst, pos)
+        return lst['datastructure'].getElement(lst, pos)
     except Exception as exp:
         error.reraise(exp, 'List->getElement: ')
 
@@ -409,5 +409,5 @@ def list_selector(datastructure):
            f"Tipo de estructura de datos no soportada. Solo se soportan: {', '.join(switch_module.keys())}"
         )
 
-    module = importlib.import_module(ds, package="DataStructures.List")
+    module = importlib.import_module(ds, package="DISClib.DataStructures")
     return module
