@@ -38,12 +38,17 @@ def new_list(cmpfunction=None, module='SINGLE_LINKED', key=None, filename=None, 
     return newlist
 
 def get_element(my_list, pos):
-    searchpos = 0
+    searchpos = 1
     node = my_list["first"]
     while searchpos < pos:
         node = node["next"]
         searchpos += 1
+
+    if node is None:
+        return None  # Evitar errores
+
     return node["info"]
+
 
 def is_present(my_list, element, cmp_function):
     is_in_array = False
